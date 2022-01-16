@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Confirm | E-Shopper{% endblock title %}
+{% block content %}
+<div class="container text-center">
+    <div class="logo-404">
+        <a href="{% url 'home' %}"><img src="{% static 'images/home/logo.png' %}" alt="" /></a>
+    </div>
+    <div class="content-404">
+        <img src="{% static 'images/404/404.png' %}" class="img-responsive" alt="" />
+        <h1><b>{{confirm_text}}</b></h1>
+        <!-- <p>Uh... So it looks like you brock something. The page you are looking for has up and Vanished.</p> -->
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h2><a href="{{request.META.HTTP_REFERER}}">Bring me back</a> <a><input type="submit" value="Confirm"
+                        style="background: #FE980F; color: #FFFFFF; font-family: 'Roboto', sans-serif; font-size: 44px; font-weight: 300; padding: 8px 40px; border: 0;"></a>
+            </h2>
+        </form>
+    </div>
+</div>
+{% endblock content %}

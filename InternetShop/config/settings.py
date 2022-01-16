@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'shop',
+    'shop.apps.ShopConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -95,7 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'Europe/Kiev'
 
@@ -104,6 +105,10 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# User
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -121,6 +126,7 @@ STATICFILES_DIRS = [
 
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 

@@ -2,8 +2,8 @@ from cProfile import label
 from django.apps import AppConfig
 
 
-class ShopConfig(AppConfig):
+class UsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'shop'
-    verbose_name = 'Shop'
-    label = 'shop'
+    name = 'users'
+    verbose_name = 'Users'
+    label = 'users'

@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-
-<body>
-    Hi!!!
-</body>
-
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home | E-Shopper{% endblock title %}
+{% block content %}
+{% include 'shop/include/slider.html' %}
+<section>
+	<div class="container">
+		<div class="row">
+			{% include 'shop/include/left-sidebar.html' %}
+			<div class="col-sm-9 padding-right">
+				<div class="col-sm">
+					<ul class=" nav nav-tabs" style="border: 1px solid #F7F7F0;">
+						{% for category in category_tab %}
+						<li style="border: 1px solid #F7F7F0;"><a href="{% url 'shop' %}?q={{category.name}}"
+								style="color: #696763; font-size: 20px;">{{category.name}}</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				{% include 'shop/include/features.html' %}
+				{% include 'shop/include/recommended.html' %}
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

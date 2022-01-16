@@ -1,0 +1,37 @@
+{% load static %}
+<div class="features_items">
+    <!--features_items-->
+    <h2 class="title text-center">Features Items</h2>
+    {% for product in product_list %}
+    <div class="col-sm-4">
+        <div class="product-image-wrapper">
+            <div class="single-products">
+                <div class="productinfo text-center">
+                    <img src="{{product.image.url}}" alt="" />
+                    <h2>₴{{product.price}}</h2>
+                    <p style="font-size: 18px;">{{product.name}}</p>
+                    <!-- <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a> -->
+                </div>
+                <div class="product-overlay">
+                    <div class="overlay-content">
+                        <!-- <h2>₴{{product.price}}</h2> -->
+                        <a href="{% url 'product-detail' product.id %}">
+                            <p style="font-size: 28px; color: white;">View details</p>
+                        </a>
+                        <a href="{% url 'addCart' product.id %}" class="btn btn-default add-to-cart"><i
+                                class="fa fa-shopping-cart"></i>Add to
+                            cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="choose">
+                <ul class="nav nav-pills nav-justified">
+                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!--features_items-->
