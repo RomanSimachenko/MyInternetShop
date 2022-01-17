@@ -327,15 +327,15 @@ def addCart(request, pk):
     if not request.user.is_authenticated:
         return redirect('login-register')
 
+    user = request.user
     product = Product.objects.get(id=pk)
 
     try:
-        cart_product = CartProduct.objects.get(product=product)
+        cart_product = CartProduct.objects.get(user=user, product=product)
         if cart_product.quantity < cart_product.product.quantity:
             cart_product.quantity += 1
             cart_product.save()
     except:
-        user = request.user
         cart = CartProduct(user=user, product=product)
         cart.save()
 
