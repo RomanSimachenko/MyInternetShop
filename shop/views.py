@@ -12,8 +12,13 @@ def errorPage(request):
     """Error page(may be not allowed there)"""
     request_value = request.GET.get('q', default='')
 
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
     return redirect(f"/shop/?q={request_value}") if request_value \
-        else render(request, 'shop/error.html', {'request_value': request_value})
+        else render(request, 'shop/error.html', {'request_value': request_value, 'cart_count': cart_count})
 
 
 def login_registerPage(request):
@@ -69,10 +74,16 @@ def login_registerPage(request):
                 messages.error(
                     request, "An error occured during registration")
 
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
     return render(request, 'shop/login-register.html', {
         'login_form': login_form,
         'register_form': register_form,
         'request_value': request_value,
+        'cart_count': cart_count,
     })
 
 
@@ -91,9 +102,15 @@ def logoutUser(request):
         logout(request)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
     return render(request, 'shop/confirm.html', {
         'confirm_text': 'Do you really want to logout?',
         'request_value': request_value,
+        'cart_count': cart_count,
     })
 
 
@@ -123,6 +140,11 @@ def index(request):
     else:
         recommended_products = []
 
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
     return render(request, 'shop/index.html', {
         'category_list': category_list,
         'brand_list': brand_list,
@@ -130,6 +152,7 @@ def index(request):
         'recommended_products': recommended_products,
         'category_tab': category_list[:5],
         'request_value': request_value,
+        'cart_count': cart_count,
     })
 
 
@@ -148,11 +171,17 @@ def shop(request):
         Q(brand__name__icontains=request_value)
     )
 
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
     return render(request, 'shop/shop.html', {
         'category_list': category_list,
         'brand_list': brand_list,
         'product_list': product_list,
         'request_value': request_value,
+        'cart_count': cart_count,
     })
 
 
@@ -168,7 +197,16 @@ def cart(request):
 
     cart_products = CartProduct.objects.filter(user=request.user)
 
-    return render(request, 'shop/cart.html', {'cart_products': cart_products, 'request_value': request_value})
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
+    return render(request, 'shop/cart.html', {
+        'cart_products': cart_products,
+        'request_value': request_value,
+        'cart_count': cart_count,
+    })
 
 
 def checkout(request):
@@ -183,7 +221,16 @@ def checkout(request):
 
     cart_products = CartProduct.objects.filter(user=request.user)
 
-    return render(request, 'shop/checkout.html', {'cart_products': cart_products, 'request_value': request_value})
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
+    return render(request, 'shop/checkout.html', {
+        'cart_products': cart_products,
+        'request_value': request_value,
+        'cart_count': cart_count,
+    })
 
 
 def blog(request):
@@ -200,10 +247,16 @@ def blog(request):
     category_list = Category.objects.all()
     brand_list = Brand.objects.all()
 
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
     return render(request, 'shop/blog.html', {
         'category_list': category_list,
         'brand_list': brand_list,
         'request_value': request_value,
+        'cart_count': cart_count,
     })
 
 
@@ -224,7 +277,12 @@ def contact(request):
         new_message.save()
         return redirect('home')
 
-    return render(request, 'shop/contact.html', {'request_value': request_value})
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
+    return render(request, 'shop/contact.html', {'request_value': request_value, 'cart_count': cart_count})
 
 
 def product_detail(request, pk):
@@ -244,12 +302,18 @@ def product_detail(request, pk):
     # get recommended products from the DB
     recommended_products = RecommendedProduct.objects.all()[0].product.all()
 
+    if request.user.is_authenticated:
+        cart_count = CartProduct.objects.filter(user=request.user).count
+    else:
+        cart_count = -1
+
     return render(request, 'shop/product_detail.html', {
         'product': product,
         'category_list': category_list,
         'brand_list': brand_list,
         'recommended_products': recommended_products,
         'request_value': request_value,
+        'cart_count': cart_count,
     })
 
 
