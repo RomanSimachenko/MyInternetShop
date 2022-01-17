@@ -113,11 +113,15 @@ def index(request):
     )[:5]
 
     # get recommended products from the DB
-    recommended_products = RecommendedProduct.objects.all()[0].product.filter(
-        Q(name__icontains=request_value) |
-        Q(category__name__icontains=request_value) |
-        Q(brand__name__icontains=request_value)
-    )
+    recommended_products = RecommendedProduct.objects.all()
+    if recommended_products:
+        recommended_products = RecommendedProduct.objects.all()[0].product.filter(
+            Q(name__icontains=request_value) |
+            Q(category__name__icontains=request_value) |
+            Q(brand__name__icontains=request_value)
+        )
+    else:
+        recommended_products = []
 
     return render(request, 'shop/index.html', {
         'category_list': category_list,

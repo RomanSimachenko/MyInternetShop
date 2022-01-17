@@ -11,10 +11,12 @@
                         <div class="single-products">
                             <div class="productinfo text-center">
                                 <img src="{{product.image.url}}" alt="" />
-                                <h2>₴{{product.price}}</h2>
-                                <a href="{% url 'product-detail' product.id %}"
-                                    style="font-size: 18px; margin-top: 0px; padding-top: 0px; color: #696763;">{{product.name}}</a>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add
+                                <h2 style="margin-bottom: 10px;">₴{{product.price}}</h2>
+                                <div style="margin-bottom: 10px;">
+                                    <a href="{% url 'product-detail' product.id %}"
+                                        style="font-size: 20px; margin-top: 0px; padding-top: 0px; color: #696763;">{{product.name}}</a>
+                                </div>
+                                <a href="{% url 'addCart' product.id %}" class="btn btn-default add-to-cart"><i></i>Add
                                     to cart</a>
                             </div>
                         </div>

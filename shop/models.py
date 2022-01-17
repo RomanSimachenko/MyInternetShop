@@ -1,3 +1,4 @@
+from email.policy import default
 from itertools import product
 from tabnanny import verbose
 from django.db import models
@@ -53,7 +54,7 @@ class Product(models.Model):
         Category, verbose_name="Category", on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(
         Brand, verbose_name="Brand", on_delete=models.SET_NULL, null=True)
-    image = models.ImageField("Image", null=True, upload_to='shop/images/')
+    image = models.ImageField("Image", default="shop/images/standart.jpeg", upload_to='shop/images/')
     description = models.TextField("Description", null=True)
     price = models.PositiveIntegerField(
         "Price", help_text="indicate the price in UAH")

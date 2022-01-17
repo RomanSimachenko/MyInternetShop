@@ -54,7 +54,7 @@
 							<p>Web ID: {{product.id}}</p>
 							<img src="images/product-details/rating.png" alt="" />
 							<span>
-								<span>UAN ₴{{product.price}}</span>
+								<span>UAH ₴{{product.price}}</span>
 								<!-- <label>Quantity:</label>
 								<input type="text" value="1" /> -->
 								<a href="{% url 'addCart' product.id %}">
@@ -68,6 +68,7 @@
 							<p style="font-size: 16px;"><b>Availability:</b> {{product.avaible}}</p>
 							<p style="font-size: 16px;"><b>Condition:</b> {{product.condition}}</p>
 							<p style="font-size: 16px;"><b>Brand:</b> {{product.brand.name}}</p>
+							<p style="font-size: 16px;"><b>Amount:</b> {{product.quantity}}</p>
 							<a href=""><img src="images/product-details/share.png" class="share img-responsive"
 									alt="" /></a>
 						</div>
