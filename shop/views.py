@@ -30,7 +30,7 @@ def login_registerPage(request):
 
     # check authenticate
     if request.user.is_authenticated:
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return redirect('home')
 
     # save login and register form
     login_form = CustomUserLoginForm()
@@ -100,7 +100,7 @@ def logoutUser(request):
     # if form-button has been pressed - logout
     if request.method == 'POST':
         logout(request)
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return redirect('home')
 
     if request.user.is_authenticated:
         cart_count = CartProduct.objects.filter(user=request.user).count
