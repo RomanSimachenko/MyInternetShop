@@ -1,12 +1,11 @@
-from csv import list_dialects
 from django.contrib import admin
-from .models import Category, Brand, Product, RecommendedProduct, Message, CartProduct, MailingList
+from .models import Category, Brand, Product, RecommendedProduct, Message, CartProduct, MailingList, Review
 
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     """Messages"""
-    list_display = ('name', 'email', 'subject', 'send_date')
+    list_display = ('user', 'email', 'subject', 'added')
 
 
 @admin.register(Category)
@@ -26,6 +25,12 @@ class ProductAdmin(admin.ModelAdmin):
     """Products"""
     list_display = ('name', 'category', 'brand', 'price',
                     'avaible', 'condition', 'quantity', 'added',)
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    """Review"""
+    list_display = ('user', 'product', 'email', 'added',)
 
 
 @admin.register(RecommendedProduct)

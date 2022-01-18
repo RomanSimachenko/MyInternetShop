@@ -26,4 +26,7 @@ urlpatterns = [
     path('reduceQuantity/<int:pk>/', views.reduceQuantity, name='reduceQuantity'),
 
     path('addMail/', views.addMail, name='addMail'),
+
+    path('addReview/<int:pk>/', views.addReview, name='addReview'),
+    path('deleteReview/<int:pk>/', views.deleteReview, name='deleteReview'),
 ]

@@ -83,7 +83,7 @@
 							<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
 							<!-- <li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
 							<li><a href="#tag" data-toggle="tab">Tag</a></li> -->
-							<li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+							<li><a href="#reviews" data-toggle="tab">Reviews ({{reviews.count}})</a></li>
 						</ul>
 					</div>
 					<div class="tab-content">
@@ -93,27 +93,35 @@
 							</p>
 						</div>
 						<div class="tab-pane fade" id="reviews">
+							{% for review in reviews %}
 							<div class="col-sm-12">
 								<ul>
-									<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-									<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-									<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+									<li><a><i class="fa fa-user"></i>{{review.user.username}}</a></li>
+									<li><a><i class="fa fa-clock-o"></i>{{review.added|time}}</a></li>
+									<li><a><i class="fa fa-calendar-o"></i>{{review.added|date}}</a></li>
+									{% if request.user == review.user %}
+									<li>
+										<a class="cart_quantity_delete" href="{% url 'deleteReview' review.id %}"
+											style="background-color: #FE980F; color: black"><i
+												class="fa fa-times"></i>X</a>
+									</li>
+									{% endif %}
 								</ul>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud
-									exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure
-									dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-									pariatur.</p>
-								<p><b>Write Your Review</b></p>
-
-								<form action="#">
+								<p>
+									{{review.body}}
+								</p>
+								<hr>
+								{% endfor %}
+								<p style="font-size: 20px;"><b>Write Your Review</b></p>
+								<form action="{% url 'addReview' product.id %}" method="POST">
+									{% csrf_token %}
 									<span>
-										<input type="text" placeholder="Your Name" />
-										<input type="email" placeholder="Email Address" />
+										<input type="name" name="user" value="{{request.user.username}}" readonly />
+										<input type="email" name="email" value="{{request.user.email}}" readonly />
 									</span>
-									<textarea name=""></textarea>
-									<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-									<button type="button" class="btn btn-default pull-right">
+									<textarea name="body" placeholder="Review text..."></textarea>
+									<!-- <b>Rating: </b> <img src="{% static 'img/product-details/rating.png' %}" alt="" /> -->
+									<button type="submit" class="btn btn-default pull-right">
 										Submit
 									</button>
 								</form>
@@ -123,7 +131,9 @@
 					</div>
 				</div>
 				<!--/category-tab-->
+				{% if recommended_products %}
 				{% include 'shop/include/recommended.html' %}
+				{% endif %}
 			</div>
 		</div>
 	</div>

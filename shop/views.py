@@ -3,8 +3,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Q
-from .forms import CustomUserRegisterForm, CustomUserLoginForm
-from .models import Category, Brand, Product, RecommendedProduct, Message, CartProduct, MailingList
+from users.forms import CustomUserRegisterForm, CustomUserLoginForm
+from .models import Category, Brand, Product, RecommendedProduct, Message, CartProduct, MailingList, Review
 from users.models import CustomUser
 
 
@@ -57,7 +57,7 @@ def login_registerPage(request):
                 request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
             else:
                 messages.error(
                     request, "Username or Password doesn't exist")
@@ -69,7 +69,7 @@ def login_registerPage(request):
                 user.username = user.username.lower()
                 user.save()
                 login(request, user)
-                return redirect('home')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
             else:
                 messages.error(
                     request, "An error occured during registration")
@@ -100,7 +100,7 @@ def logoutUser(request):
     # if form-button has been pressed - logout
     if request.method == 'POST':
         logout(request)
-        return redirect('home')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
 
     if request.user.is_authenticated:
         cart_count = CartProduct.objects.filter(user=request.user).count
@@ -132,7 +132,7 @@ def index(request):
     # get recommended products from the DB
     recommended_products = RecommendedProduct.objects.all()
     if recommended_products:
-        recommended_products = RecommendedProduct.objects.all()[0].product.filter(
+        recommended_products = recommended_products[0].product.filter(
             Q(name__icontains=request_value) |
             Q(category__name__icontains=request_value) |
             Q(brand__name__icontains=request_value)
@@ -300,12 +300,22 @@ def product_detail(request, pk):
     product = Product.objects.get(id=pk)
 
     # get recommended products from the DB
-    recommended_products = RecommendedProduct.objects.all()[0].product.all()
+    recommended_products = RecommendedProduct.objects.all()
+    if recommended_products:
+        recommended_products = recommended_products[0].product.filter(
+            Q(name__icontains=request_value) |
+            Q(category__name__icontains=request_value) |
+            Q(brand__name__icontains=request_value)
+        )
+    else:
+        recommended_products = []
 
     if request.user.is_authenticated:
         cart_count = CartProduct.objects.filter(user=request.user).count
     else:
         cart_count = -1
+
+    reviews = Review.objects.filter(product=product)
 
     return render(request, 'shop/product_detail.html', {
         'product': product,
@@ -314,6 +324,7 @@ def product_detail(request, pk):
         'recommended_products': recommended_products,
         'request_value': request_value,
         'cart_count': cart_count,
+        'reviews': reviews,
     })
 
 
@@ -436,5 +447,36 @@ def addMail(request):
     except:
         new_email = MailingList(email=email)
         new_email.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
+
+
+def addReview(request, pk):
+    """Add review to product"""
+    if not request.user.is_authenticated:
+        return redirect('login-register')
+
+    request_value = request.GET.get('q', default='')
+
+    body = request.POST.get('body')
+    product = Product.objects.get(id=pk)
+
+    new_review = Review(product=product, user=request.user,
+                        email=request.user.email, body=body)
+    new_review.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
+
+
+def deleteReview(request, pk):
+    """Delete review"""
+    if not request.user.is_authenticated:
+        return redirect('login-register')
+
+    request_value = request.GET.get('q', default='')
+
+    review = Review.objects.get(id=pk)
+    if request.user == review.user:
+        review.delete()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})

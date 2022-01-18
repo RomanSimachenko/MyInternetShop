@@ -1,22 +1,20 @@
-from email.policy import default
-from itertools import product
-from tabnanny import verbose
 from django.db import models
 from users.models import CustomUser
 
 
 class Message(models.Model):
     """Messages"""
-    name = models.CharField("Name", max_length=300)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     email = models.EmailField("Email")
     subject = models.CharField("Subject", max_length=200)
     body = models.TextField("Message text")
-    send_date = models.DateTimeField(auto_now_add=True)
+    added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return self.name
+        return self.user.username
 
     class Meta:
+        ordering = ('-added',)
         verbose_name = "Message"
         verbose_name_plural = "Messages"
 
@@ -54,8 +52,9 @@ class Product(models.Model):
         Category, verbose_name="Category", on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(
         Brand, verbose_name="Brand", on_delete=models.SET_NULL, null=True)
-    image = models.ImageField("Image", default="shop/images/standart.jpeg", upload_to='shop/images/')
-    description = models.TextField("Description", null=True)
+    image = models.ImageField(
+        "Image", default="shop/images/standart.jpeg", upload_to='shop/images/')
+    description = models.TextField("Description")
     price = models.PositiveIntegerField(
         "Price", help_text="indicate the price in UAH")
     avaible = models.CharField(
@@ -68,9 +67,27 @@ class Product(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['-added']
+        ordering = ('-added',)
         verbose_name = "Product"
         verbose_name_plural = "Products"
+
+
+class Review(models.Model):
+    """Reviews"""
+    product = models.ForeignKey(
+        Product, verbose_name="Product", on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    email = models.EmailField("Email")
+    body = models.CharField("Review text", max_length=500)
+    added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.user.username
+
+    class Meta:
+        ordering = ('-added',)
+        verbose_name = "Review"
+        verbose_name_plural = "Reviews"
 
 
 class RecommendedProduct(models.Model):
