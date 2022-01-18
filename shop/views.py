@@ -1,3 +1,5 @@
+from audioop import reverse
+from traceback import print_tb
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -57,10 +59,11 @@ def login_registerPage(request):
                 request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
+                return redirect('home')
             else:
                 messages.error(
                     request, "Username or Password doesn't exist")
+
         else:
             register_form = CustomUserRegisterForm(request.POST)
             if register_form.is_valid():
@@ -69,7 +72,7 @@ def login_registerPage(request):
                 user.username = user.username.lower()
                 user.save()
                 login(request, user)
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
+                return redirect('home')
             else:
                 messages.error(
                     request, "An error occured during registration")
@@ -100,7 +103,7 @@ def logoutUser(request):
     # if form-button has been pressed - logout
     if request.method == 'POST':
         logout(request)
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'), {'request_value': request_value})
+        return redirect('home')
 
     if request.user.is_authenticated:
         cart_count = CartProduct.objects.filter(user=request.user).count
@@ -267,12 +270,15 @@ def contact(request):
     if request_value:
         return redirect(f"/shop/?q={request_value}")
 
+    if not request.user.is_authenticated:
+        return redirect('login-register')
+
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
+        user = request.user
+        email = request.user.email
         subject = request.POST.get('subject')
         body = request.POST.get('body')
-        new_message = Message(name=name, email=email,
+        new_message = Message(user=user, email=email,
                               subject=subject, body=body)
         new_message.save()
         return redirect('home')
