@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Checkout | E-Shopper{% endblock title %}
+{% block title %}Checkout{% endblock title %}
 {% block content %}
 <section id="cart_items">
 	<div class="container">
 		<div class="breadcrumbs">
 			<ol class="breadcrumb">
-				<li><a href="#">Home</a></li>
+				<li><a href="{% url 'home' %}">Home</a></li>
 				<li class="active">Check out</li>
 			</ol>
 		</div>
@@ -128,7 +128,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="payment-options" style="margin-top: 0px; padding-top: 0px;">
+		<!-- <div class="payment-options" style="margin-top: 0px; padding-top: 0px;">
 			<span>
 				<label><input type="checkbox"> Direct Bank Transfer</label>
 			</span>
@@ -138,7 +138,7 @@
 			<span>
 				<label><input type="checkbox"> Paypal</label>
 			</span>
-		</div>
+		</div> -->
 	</div>
 </section>
 <!--/#cart_items-->

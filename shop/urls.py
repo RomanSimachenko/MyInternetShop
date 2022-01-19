@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('admin/', views.errorPage, name='error'),
+    path('admin-panel/', views.errorPage, name='error'),
 
     path('', views.index, name='home'),
 

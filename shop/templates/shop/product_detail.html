@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Checkout | E-Shopper{% endblock title %}
+{% block title %}Detail{% endblock title %}
 {% block content %}
 <section>
 	<div class="container">
@@ -49,10 +49,10 @@
 					<div class="col-sm-7">
 						<div class="product-information">
 							<!--/product-information-->
-							<img src="{% static 'img/product-details/new.jpg' %}" class="newarrival" alt="" />
+							<!-- <img src="{% static 'img/product-details/new.jpg' %}" class="newarrival" alt="" /> -->
 							<h2 style="font-size: 32px;">{{product.name}}</h2>
 							<p>Web ID: {{product.id}}</p>
-							<img src="{% static 'img/product-details/rating.png' %}" alt="" />
+							<!-- <img src="{% static 'img/product-details/rating.png' %}" alt="" /> -->
 							<span>
 								<span>UAH ₴{{product.price}}</span>
 								<!-- <label>Quantity:</label>
@@ -69,8 +69,8 @@
 							<p style="font-size: 16px;"><b>Condition:</b> {{product.condition}}</p>
 							<p style="font-size: 16px;"><b>Brand:</b> {{product.brand.name}}</p>
 							<p style="font-size: 16px;"><b>Amount:</b> {{product.quantity}}</p>
-							<a href=""><img src="{% static 'img/product-details/share.png' %}"
-									class="share img-responsive" alt="" /></a>
+							<!-- <a href=""><img src="{% static 'img/product-details/share.png' %}"
+									class="share img-responsive" alt="" /></a> -->
 						</div>
 						<!--/product-information-->
 					</div>

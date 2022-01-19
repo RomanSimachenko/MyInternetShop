@@ -1,5 +1,3 @@
-from audioop import reverse
-from traceback import print_tb
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -246,9 +244,10 @@ def blog(request):
     if not request.user.is_authenticated:
         return redirect('login-register')
 
-    # get all categories and brands from the database and render them on the page
+    # get all categories, brands and products from the database and render them on the page
     category_list = Category.objects.all()
     brand_list = Brand.objects.all()
+    products = Product.objects.all()
 
     if request.user.is_authenticated:
         cart_count = CartProduct.objects.filter(user=request.user).count
@@ -256,6 +255,7 @@ def blog(request):
         cart_count = -1
 
     return render(request, 'shop/blog.html', {
+        'products': products,
         'category_list': category_list,
         'brand_list': brand_list,
         'request_value': request_value,
