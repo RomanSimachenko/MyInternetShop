@@ -30,6 +30,8 @@ INSTALLED_APPS = [
 
     'shop.apps.ShopConfig',
     'users.apps.UsersConfig',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
