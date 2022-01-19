@@ -37,6 +37,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 clearfix">
+                    {% if request.user.is_authenticated %}
+                    <h3 style="color: #696763;;">Hello {{request.user.username}}!!</h3>
+                    {% endif %}
                     <!-- <div class="logo pull-left">
                         <a href="{% url 'home' %}"><img src="{% static 'home/logo.png' %}" alt="" /></a>
                     </div>
