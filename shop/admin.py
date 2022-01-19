@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import Category, Brand, Product, RecommendedProduct, Message, CartProduct, MailingList, Review
+from .models import Category, Brand, Product, RecommendedProduct, Message, MailingList, Review
 
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     """Messages"""
-    list_display = ('user', 'email', 'subject', 'added')
+    list_display = ('user', 'email', 'subject', 'added',)
+    readonly_fields = ('user', 'email', 'subject', 'body', 'added',)
 
 
 @admin.register(Category)
@@ -31,6 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
 class ReviewAdmin(admin.ModelAdmin):
     """Review"""
     list_display = ('user', 'product', 'email', 'added',)
+    readonly_fields = ('user', 'product', 'email', 'body', 'added',)
 
 
 @admin.register(RecommendedProduct)
@@ -38,13 +40,14 @@ class RecommendedProductAdmin(admin.ModelAdmin):
     """Recommended products"""
 
 
-@admin.register(CartProduct)
-class CartProductAdmin(admin.ModelAdmin):
-    """CartProduct"""
-    list_display = ('user', 'product', 'quantity',)
+# @admin.register(CartProduct)
+# class CartProductAdmin(admin.ModelAdmin):
+#     """CartProduct"""
+#     list_display = ('user', 'product', 'quantity',)
 
 
 @admin.register(MailingList)
 class MailingListAdmin(admin.ModelAdmin):
     """Mailing list"""
     list_display = ('email',)
+    readonly_fields = ('email',)
