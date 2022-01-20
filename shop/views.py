@@ -241,9 +241,6 @@ def blog(request):
     if request_value:
         return redirect(f"/shop/?q={request_value}")
 
-    if not request.user.is_authenticated:
-        return redirect('login-register')
-
     # get all categories, brands and products from the database and render them on the page
     category_list = Category.objects.all()
     brand_list = Brand.objects.all()
